@@ -27,19 +27,6 @@ export function AppNav() {
                 logo={FileSpreadsheet}
                 className="min-w-0 flex-1"
                 />
-
-                <SidebarTrigger
-                className="
-                    shrink-0
-                    group-data-[collapsible=icon]:absolute
-                    group-data-[collapsible=icon]:left-[calc(100%+14px)]
-                    group-data-[collapsible=icon]:ml-5
-                    group-data-[collapsible=icon]:-translate-y-1/2
-                    group-data-[collapsible=icon]:z-20
-                    group-data-[collapsible=icon]:bg-background
-                    group-data-[collapsible=icon]:shadow-sm
-                "
-                />
             </div>
             </SidebarHeader>
         <SidebarContent>
