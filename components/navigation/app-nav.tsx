@@ -8,8 +8,8 @@ import type { NavMainItem } from '@aeroflow/af-components';
 export { SidebarProvider } from '@aeroflow/af-components';
 
 const navItems: NavMainItem[] = [
-  { title: 'Billing Report', url: '/', icon: TableProperties },
-  { title: 'Claims-NA', url: '/1', icon: FileText },
+  { title: 'Billing Report (Lift 115)', url: '/', icon: TableProperties },
+  { title: 'Table Shell (Lift-2)', url: '/lift-2', icon: FileText },
   { title: 'Settings-NA', url: '/2', icon: Settings },
 ];
 
