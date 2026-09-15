@@ -1,6 +1,7 @@
 "use client";
+import { useState } from 'react';
 import { PageHeader } from "@/components/page-header";
-import { useDataTable, DataTable } from "@aeroflow/af-components";
+import { useDataTable, DataTable, DataTableColumnHeader, DataTableDragHandle } from "@aeroflow/af-components";
 import type { UseDataTableProps } from "@aeroflow/af-components";
 
 type Patient = {
@@ -140,35 +141,122 @@ const displayValue = ({ getValue }: { getValue: () => unknown }) => {
 };
 
 const tableCols: UseDataTableProps<Patient>["columns"] = [
-  { accessorKey: "payer", header: "Payer" },
-  { accessorKey: "patientNumber", header: "pt#" },
-  { accessorKey: "hcpc", header: "hcpc" },
-  { accessorKey: "dateOfService", header: "dos" },
-  { accessorKey: "endServiceDate", header: "end_service_date" },
-  { accessorKey: "sentDate", header: "sentdt", cell: displayValue },
-  { accessorKey: "xmit", header: "xmit", cell: displayValue },
-  { accessorKey: "denialDate", header: "denydt", cell: displayValue },
-  { accessorKey: "denialCode", header: "denycd", cell: displayValue },
-  { accessorKey: "denialCode2", header: "denycd2", cell: displayValue },
-  { accessorKey: "denialCode3", header: "denycd3", cell: displayValue },
-  { accessorKey: "rm1", header: "rm1", cell: displayValue },
-  { accessorKey: "cmn", header: "cmn", cell: displayValue },
-  { accessorKey: "remit", header: "remit", cell: displayValue },
-  { accessorKey: "serviceStatus", header: "S/U", cell: displayValue },
+  { accessorKey: "payer", header: ({ column }) => (
+        <div className="flex items-center gap-2">
+            <DataTableDragHandle aria-label="Move Payer column" />
+            <DataTableColumnHeader column={column} title="Payer" />
+        </div>
+    ) },
+  { accessorKey: "patientNumber", header: ({ column }) => (
+      <div className="flex items-center gap-2">
+        <DataTableDragHandle aria-label="Move pt# column" />
+        <DataTableColumnHeader column={column} title="pt#" />
+      </div>
+    ) },
+  { accessorKey: "hcpc", header: ({ column }) => (
+      <div className="flex items-center gap-2">
+        <DataTableDragHandle aria-label="Move hcpc column" />
+        <DataTableColumnHeader column={column} title="hcpc" />
+      </div>
+    ) },
+  { accessorKey: "dateOfService", header: ({ column }) => (
+      <div className="flex items-center gap-2">
+        <DataTableDragHandle aria-label="Move dos column" />
+        <DataTableColumnHeader column={column} title="dos" />
+      </div>
+    ) },
+  { accessorKey: "endServiceDate", header: ({ column }) => (
+      <div className="flex items-center gap-2">
+        <DataTableDragHandle aria-label="Move end_service_date column" />
+        <DataTableColumnHeader column={column} title="end_service_date" />
+      </div>
+    ) },
+  { accessorKey: "sentDate", header: ({ column }) => (
+      <div className="flex items-center gap-2">
+        <DataTableDragHandle aria-label="Move sentdt column" />
+        <DataTableColumnHeader column={column} title="sentdt" />
+      </div>
+    ), cell: displayValue },
+  { accessorKey: "xmit", header: ({ column }) => (
+      <div className="flex items-center gap-2">
+        <DataTableDragHandle aria-label="Move xmit column" />
+        <DataTableColumnHeader column={column} title="xmit" />
+      </div>
+    ), cell: displayValue },
+  { accessorKey: "denialDate", header: ({ column }) => (
+      <div className="flex items-center gap-2">
+        <DataTableDragHandle aria-label="Move denydt column" />
+        <DataTableColumnHeader column={column} title="denydt" />
+      </div>
+    ), cell: displayValue },
+  { accessorKey: "denialCode", header: ({ column }) => (
+      <div className="flex items-center gap-2">
+        <DataTableDragHandle aria-label="Move denycd column" />
+        <DataTableColumnHeader column={column} title="denycd" />
+      </div>
+    ), cell: displayValue },
+  { accessorKey: "denialCode2", header: ({ column }) => (
+      <div className="flex items-center gap-2">
+        <DataTableDragHandle aria-label="Move denycd2 column" />
+        <DataTableColumnHeader column={column} title="denycd2" />
+      </div>
+    ), cell: displayValue },
+  { accessorKey: "denialCode3", header: ({ column }) => (
+      <div className="flex items-center gap-2">
+        <DataTableDragHandle aria-label="Move denycd3 column" />
+        <DataTableColumnHeader column={column} title="denycd3" />
+      </div>
+    ), cell: displayValue },
+  { accessorKey: "rm1", header: ({ column }) => (
+      <div className="flex items-center gap-2">
+        <DataTableDragHandle aria-label="Move rm1 column" />
+        <DataTableColumnHeader column={column} title="rm1" />
+      </div>
+    ), cell: displayValue },
+  { accessorKey: "cmn", header: ({ column }) => (
+      <div className="flex items-center gap-2">
+        <DataTableDragHandle aria-label="Move cmn column" />
+        <DataTableColumnHeader column={column} title="cmn" />
+      </div>
+    ), cell: displayValue },
+  { accessorKey: "remit", header: ({ column }) => (
+      <div className="flex items-center gap-2">
+        <DataTableDragHandle aria-label="Move remit column" />
+        <DataTableColumnHeader column={column} title="remit" />
+      </div>
+    ), cell: displayValue },
+  { accessorKey: "serviceStatus", header: ({ column }) => (
+      <div className="flex items-center gap-2">
+        <DataTableDragHandle aria-label="Move S/U column" />
+        <DataTableColumnHeader column={column} title="S/U" />
+      </div>
+    ), cell: displayValue },
 ];
 
 
 export default function LiftTableShell() {
+    const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({});
+
     const table = useDataTable<Patient>({
         data: patients,
         columns: tableCols,
         getRowId: row => row.id,
+        enableRowSelection: true,
+        enableMultiRowSelection: false,
+        onRowSelectionChange: setRowSelection,
+        rowSelection,
     });
 
     return (
         <div className="w-full">
             <PageHeader headerText="Billing Report"></PageHeader>
-            <DataTable table={table} variant="grid" enableColumnReordering />
+            <DataTable
+                table={table}
+                variant="grid"
+                headerClassName="bg-table-row-stripe [&_th]:font-bold [&_button]:font-bold"
+                rowClassName={(row) => row.getIsSelected() ? "bg-blue-100" : undefined }
+                onRowClick={claim => table.getRow(claim.id).toggleSelected()}
+                enableColumnReordering={true} />
         </div>
     );
 }
