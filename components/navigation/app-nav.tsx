@@ -1,7 +1,7 @@
 'use client';
 import { usePathname } from 'next/navigation';
 import { FileText, FileSpreadsheet, Settings, TableProperties } from 'lucide-react';
-import { NavMain, SidebarBrand, SidebarGroup, SidebarGroupLabel, Sidebar, SidebarHeader, SidebarMenu, SidebarContent, SidebarMenuItem, SidebarMenuButton} from '@aeroflow/af-components';
+import { SidebarBrand, SidebarGroup, SidebarGroupLabel, Sidebar, SidebarHeader, SidebarMenu, SidebarContent, SidebarMenuItem, SidebarMenuButton} from '@aeroflow/af-components';
 import Link from 'next/link';
 
 import type { NavMainItem } from '@aeroflow/af-components';
@@ -10,7 +10,7 @@ export { SidebarProvider } from '@aeroflow/af-components';
 const navItems: NavMainItem[] = [
   { title: 'Billing Report (Lift 115)', url: '/', icon: TableProperties },
   { title: 'Table Shell (Lift-2)', url: '/lift-2', icon: FileText },
-  { title: 'Settings-NA', url: '/2', icon: Settings },
+  { title: 'Settings-NA', url: '#', icon: Settings },
 ];
 
 export function AppNav() {

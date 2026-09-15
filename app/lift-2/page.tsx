@@ -253,7 +253,7 @@ export default function LiftTableShell() {
             <DataTable
                 table={table}
                 variant="grid"
-                headerClassName="bg-table-row-stripe [&_th]:font-bold [&_button]:font-bold"
+                headerClassName="bg-table-row-stripe [&_th]:font-bold! [&_button]:font-bold!"
                 rowClassName={(row) => row.getIsSelected() ? "bg-blue-100" : undefined }
                 onRowClick={claim => table.getRow(claim.id).toggleSelected()}
                 enableColumnReordering={true} />
