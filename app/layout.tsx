@@ -18,7 +18,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-full flex flex-col">
         <ThemeProvider theme="utility">
-          <SidebarProvider defaultOpen={false}>
+          <SidebarProvider defaultOpen={true}>
             <AppNav />
             <main className="flex-1">{children}</main>
           </SidebarProvider>

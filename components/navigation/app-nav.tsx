@@ -1,9 +1,9 @@
 'use client';
 import { usePathname } from 'next/navigation';
 import { FileText, FileSpreadsheet, Settings, TableProperties } from 'lucide-react';
-import {
-  NavMain, SidebarBrand, SidebarProvider, SidebarTrigger, Sidebar, SidebarHeader, SidebarContent,
-} from '@aeroflow/af-components';
+import { NavMain, SidebarBrand, SidebarGroup, SidebarGroupLabel, Sidebar, SidebarHeader, SidebarMenu, SidebarContent, SidebarMenuItem, SidebarMenuButton} from '@aeroflow/af-components';
+import Link from 'next/link';
+
 import type { NavMainItem } from '@aeroflow/af-components';
 export { SidebarProvider } from '@aeroflow/af-components';
 
@@ -30,7 +30,21 @@ export function AppNav() {
             </div>
             </SidebarHeader>
         <SidebarContent>
-          <NavMain items={items} variant="grouped" label="Applications" />
+          <SidebarGroup>
+            <SidebarGroupLabel>Applications</SidebarGroupLabel>
+              <SidebarMenu>
+                {items.map((item) => (
+                  <SidebarMenuItem key={item.url}>
+                    <SidebarMenuButton asChild isActive={item.isActive} tooltip={item.title}>
+                      <Link href={item.url}>
+                        {item.icon && <item.icon />}
+                        <span>{item.title}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+          </SidebarGroup>
         </SidebarContent>
       </Sidebar>
   );
