@@ -24,17 +24,14 @@ export default function Home() {
               placeholder="Select Tier"
               options={[
                 {
-                  label: "List Item",
-                  value: "item-1",
+                  label: "Primary",
+                  value: "primary",
                 },
                 {
-                  label: "List Item",
-                  value: "item-2",
+                  label: "Secondary/Tertiary",
+                  value: "secondary",
                 },
-                {
-                  label: "List Item",
-                  value: "item-3",
-                },
+             
               ]}
 
               size="default"
@@ -57,19 +54,19 @@ export default function Home() {
                 labelPosition="above"
                 labelClassName="py-0"
                 wrapperClassName="space-y-2"
-                placeholder="Select Tier"
+                placeholder="Select Patient"
                 options={[
                   {
-                    label: "List Item",
-                    value: "item-1",
+                    label: "Tim Fischer",
+                    value: "pt12345",
                   },
                   {
-                    label: "List Item",
-                    value: "item-2",
+                    label: "Matthew Copello",
+                    value: "pt12346",
                   },
                   {
-                    label: "List Item",
-                    value: "item-3",
+                    label: "Joe Cacka",
+                    value: "pt12347",
                   },
                 ]}
                 size="default"
@@ -87,19 +84,19 @@ export default function Home() {
             <Select
               label="Payer Rep"
               labelPosition="above"
-              placeholder="Select Tier"
+              placeholder="Select Payer Rep"
               options={[
                 {
-                  label: "List Item",
-                  value: "item-1",
+                  label: "Layosa, Jason",
+                  value: "RP12346",
                 },
                 {
-                  label: "List Item",
-                  value: "item-2",
+                  label: "Marchesoni, Joel",
+                  value: "RP12347",
                 },
                 {
-                  label: "List Item",
-                  value: "item-3",
+                  label: "Winters, Felicia",
+                  value: "RP12345",
                 },
               ]}
               size="default"
@@ -110,19 +107,27 @@ export default function Home() {
             <Select
               label="Payer"
               labelPosition="above"
-              placeholder="Select Tier"
+              placeholder="Select Payer"
               options={[
                 {
-                  label: "List Item",
-                  value: "item-1",
+                  label: "Aetna",
+                  value: "payer-001",
                 },
                 {
-                  label: "List Item",
-                  value: "item-2",
+                  label: "Cigna",
+                  value: "payer-002",
                 },
                 {
-                  label: "List Item",
-                  value: "item-3",
+                  label: "Humana",
+                  value: "payer-003",
+                },
+                {
+                  label: "Molina Healthcare",
+                  value: "payer-004",
+                },
+                {
+                  label: "UnitedHealthcare",
+                  value: "payer-005",
                 },
               ]}
               size="default"
