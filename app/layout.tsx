@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import "@aeroflow/design-tokens/index.css";
+
 import '@aeroflow/af-components/styles.css';
+import "@aeroflow/design-tokens/index.css";
+
 import { SidebarProvider, AppNav } from "@/components/navigation/app-nav";
 import { ThemeProvider } from '@aeroflow/design-tokens';
 
@@ -20,7 +22,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <ThemeProvider theme="utility">
           <SidebarProvider defaultOpen={true}>
             <AppNav />
-            <main className="flex-1">{children}</main>
+            <main className="min-w-0 flex-1">{children}</main>
           </SidebarProvider>
         </ThemeProvider>
       </body>

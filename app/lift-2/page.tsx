@@ -1,7 +1,7 @@
 "use client";
 import { useState } from 'react';
 import { PageHeader } from "@/components/page-header";
-import { useDataTable, DataTable, DataTableColumnHeader, DataTableDragHandle } from "@aeroflow/af-components";
+import { useDataTable, DataTable, DataTableColumnHeader, DataTableDragHandle, Button, RadioGroup, RadioGroupItem } from "@aeroflow/af-components";
 import type { UseDataTableProps } from "@aeroflow/af-components";
 
 type Patient = {
@@ -141,12 +141,28 @@ const displayValue = ({ getValue }: { getValue: () => unknown }) => {
 };
 
 const tableCols: UseDataTableProps<Patient>["columns"] = [
+  { id: "selection",
+    header: () => <span className="sr-only">&nbsp;</span>,
+    size:48,
+    enableSorting: false,
+    enableHiding: false,
+    cell: ({row}) => (
+      <RadioGroupItem
+        value={row.id}
+        aria-label={`Select patient ${row.original.patientNumber}, ${row.original.hcpc}`}
+        onClick={(event) => event.stopPropagation()}
+      />
+    ),
+  },
+
   { accessorKey: "payer", header: ({ column }) => (
         <div className="flex items-center gap-2">
             <DataTableDragHandle aria-label="Move Payer column" />
             <DataTableColumnHeader column={column} title="Payer" />
         </div>
-    ) },
+    ),
+  
+  },
   { accessorKey: "patientNumber", header: ({ column }) => (
       <div className="flex items-center gap-2">
         <DataTableDragHandle aria-label="Move pt# column" />
@@ -235,7 +251,13 @@ const tableCols: UseDataTableProps<Patient>["columns"] = [
 
 
 export default function LiftTableShell() {
+    //Row Selection variables  
     const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({});
+    const selectedRowId =
+      Object.keys(rowSelection).find((id) => rowSelection[id]) ?? "";
+
+    //Visibility selection variables
+    const [columnVisibility, setColumnVisibility] = useState({});
 
     const table = useDataTable<Patient>({
         data: patients,
@@ -245,18 +267,38 @@ export default function LiftTableShell() {
         enableMultiRowSelection: false,
         onRowSelectionChange: setRowSelection,
         rowSelection,
+        columnVisibility,
+        onColumnVisibilityChange: setColumnVisibility,
     });
 
     return (
-        <div className="w-full">
+        <div className="flex h-dvh w-full min-w-0 flex-col overflow-hidden [&>header]:shrink-0">
             <PageHeader headerText="Billing Report"></PageHeader>
-            <DataTable
-                table={table}
-                variant="grid"
-                headerClassName="bg-table-row-stripe [&_th]:font-bold! [&_button]:font-bold!"
-                rowClassName={(row) => row.getIsSelected() ? "bg-blue-100" : undefined }
-                onRowClick={claim => table.getRow(claim.id).toggleSelected()}
-                enableColumnReordering={true} />
+            <div className="min-h-0 flex-1 overflow-auto">
+              <RadioGroup
+                aria-label="Select a billing report row"
+                value={selectedRowId}
+                onValueChange={(id) => setRowSelection({ [id]: true })}
+              >
+                <DataTable
+                    table={table}
+                    variant="grid"
+                    headerClassName="bg-table-row-stripe [&_th]:font-bold! [&_button]:font-bold!"
+                    rowClassName={(row) => row.getIsSelected() ? "bg-sky-100 hover:bg-sky-50" : "hover:bg-slate-100" }
+                    onRowClick={claim => table.getRow(claim.id).toggleSelected()}
+                    enableColumnReordering={true} />
+              </RadioGroup>
+            </div>
+             
+             {/* Footer */}
+            <div className="flex shrink-0 items-center justify-between gap-4 border-t border-gray-200 bg-gray-100 px-4 py-3">
+              <div className="text-left">{patients.length} Results</div>
+              <div className="ml-auto shrink-0">
+                <Button variant='outline'>
+                Show/Hide Columns
+                </Button>
+              </div>
+            </div>
         </div>
     );
 }
