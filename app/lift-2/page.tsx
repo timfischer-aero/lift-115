@@ -15,6 +15,7 @@ import {
   PopoverHeader,
   PopoverTitle,
   PopoverDescription,
+  Input,
 } from "@aeroflow/af-components";
 import { patients } from "./mock-patients";
 
@@ -210,6 +211,46 @@ export default function LiftTableShell() {
         <div className="flex h-dvh w-full min-w-0 flex-col overflow-hidden [&>header]:shrink-0">
             <PageHeader headerText="Billing Report"></PageHeader>
             <div className="min-h-0 flex-1 overflow-auto">
+              {/* Action Top Panel */}
+              <div className="flex w-full flex-nowrap items-center justify-between gap-4 overflow-x-auto bg-muted px-4 py-3">
+                <div className="flex shrink-0 flex-nowrap items-center justify-start gap-4">
+                  <div className="w-64 shrink-0">
+                    <Input
+                      defaultValue=""
+                      label="Patient Number"
+                      labelPosition="beside"
+                      placeholder="Number"
+                      size="default"
+                      type="text"
+                    />
+                  </div>
+                  <div className="w-72 shrink-0">
+                    <Input
+                      defaultValue=""
+                      label="Patient Name"
+                      labelPosition="beside"
+                      placeholder="Name"
+                      size="default"
+                      type="text"
+                    />
+                  </div>
+                </div>
+                <div className="ml-auto flex shrink-0 flex-nowrap items-center justify-end gap-2">
+                  <Button variant="outline">
+                    All Remit
+                  </Button>
+                  <Button variant="outline">
+                    Patient Notes
+                  </Button>
+                  <Button variant="outline">
+                    AR History
+                  </Button>
+                  <Button variant="outline">
+                    Biller Note History
+                  </Button>
+                </div>
+              </div>
+              {/* Datatable */}
               <RadioGroup
                 aria-label="Select a billing report row"
                 value={selectedRowId}
