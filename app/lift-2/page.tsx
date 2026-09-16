@@ -1,7 +1,21 @@
 "use client";
 import { useState } from 'react';
 import { PageHeader } from "@/components/page-header";
-import { useDataTable, DataTable, DataTableColumnHeader, DataTableDragHandle, Button, RadioGroup, RadioGroupItem } from "@aeroflow/af-components";
+import { 
+  useDataTable, 
+  DataTable, 
+  DataTableColumnHeader, 
+  DataTableDragHandle, 
+  Button, 
+  RadioGroup, 
+  RadioGroupItem,
+  Popover,
+  PopoverTrigger,
+  PopoverContent, 
+  PopoverHeader,
+  PopoverTitle,
+  PopoverDescription,
+} from "@aeroflow/af-components";
 import type { UseDataTableProps } from "@aeroflow/af-components";
 
 type Patient = {
@@ -140,6 +154,21 @@ const displayValue = ({ getValue }: { getValue: () => unknown }) => {
   return value == null ? "—" : String(value);
 };
 
+const displayLink = ({ getValue }: { getValue: () => unknown }) => {
+  const value = getValue();
+  if (value == null) return "—";
+
+  return (
+    <button
+      type="button"
+      className="cursor-pointer text-blue-700 underline hover:text-blue-900"
+      onClick={(event) => event.stopPropagation()}
+    >
+      {String(value)}
+    </button>
+  );
+};
+
 const tableCols: UseDataTableProps<Patient>["columns"] = [
   { id: "selection",
     header: () => <span className="sr-only">&nbsp;</span>,
@@ -168,13 +197,45 @@ const tableCols: UseDataTableProps<Patient>["columns"] = [
         <DataTableDragHandle aria-label="Move pt# column" />
         <DataTableColumnHeader column={column} title="pt#" />
       </div>
-    ) },
+    ),
+    cell: ({row}) => (
+      <Popover>
+        <PopoverTrigger asChild>
+          <button
+            type="button"
+            className="cursor-pointer text-blue-700 underline hover:text-blue-900"
+            onClick={(event) => {
+              event.stopPropagation();
+              //TODO
+            }}
+          > 
+            { row.original.patientNumber }
+          </button>
+        </PopoverTrigger>
+        <PopoverContent
+          aria-label="Patient details"
+          align="start"
+          onClick={(event) => event.stopPropagation()}
+          >
+            <PopoverHeader>
+              <PopoverTitle id={`patient-title-${row.id}`}>
+                Patient info for { row.original.patientNumber }
+              </PopoverTitle>
+              <PopoverDescription id={`patient-description-${row.id}`}>
+                This popup could give information on a specific patient, or could instead toggle a drawer on the right to edit patient details
+              </PopoverDescription>
+            </PopoverHeader>
+            
+          </PopoverContent>
+      </Popover>
+    )
+  },
   { accessorKey: "hcpc", header: ({ column }) => (
       <div className="flex items-center gap-2">
         <DataTableDragHandle aria-label="Move hcpc column" />
         <DataTableColumnHeader column={column} title="hcpc" />
       </div>
-    ) },
+    ), cell: displayLink },
   { accessorKey: "dateOfService", header: ({ column }) => (
       <div className="flex items-center gap-2">
         <DataTableDragHandle aria-label="Move dos column" />
@@ -210,25 +271,25 @@ const tableCols: UseDataTableProps<Patient>["columns"] = [
         <DataTableDragHandle aria-label="Move denycd column" />
         <DataTableColumnHeader column={column} title="denycd" />
       </div>
-    ), cell: displayValue },
+    ), cell: displayLink },
   { accessorKey: "denialCode2", header: ({ column }) => (
       <div className="flex items-center gap-2">
         <DataTableDragHandle aria-label="Move denycd2 column" />
         <DataTableColumnHeader column={column} title="denycd2" />
       </div>
-    ), cell: displayValue },
+    ), cell: displayLink },
   { accessorKey: "denialCode3", header: ({ column }) => (
       <div className="flex items-center gap-2">
         <DataTableDragHandle aria-label="Move denycd3 column" />
         <DataTableColumnHeader column={column} title="denycd3" />
       </div>
-    ), cell: displayValue },
+    ), cell: displayLink },
   { accessorKey: "rm1", header: ({ column }) => (
       <div className="flex items-center gap-2">
         <DataTableDragHandle aria-label="Move rm1 column" />
         <DataTableColumnHeader column={column} title="rm1" />
       </div>
-    ), cell: displayValue },
+    ), cell: displayLink },
   { accessorKey: "cmn", header: ({ column }) => (
       <div className="flex items-center gap-2">
         <DataTableDragHandle aria-label="Move cmn column" />
