@@ -10,9 +10,9 @@
     "codeartifact:login": "aws codeartifact login --tool npm --domain aeroflow --domain-owner 996147455950 --repository aeroflow --region us-east-1 --profile CodeArtifactRead-996147455950"
   },
   "dependencies": {
-    "@aeroflow/af-components": "^1.3.0",
-    "@aeroflow/design-tokens": "^1.2.0",
-    "@aeroflow/devkit": "^1.2.0",
+    "@aeroflow/af-components": "^1.4.0",
+    "@aeroflow/design-tokens": "^1.2.1",
+    "@aeroflow/devkit": "^1.4.0",
     "lucide-react": "^1.44.0",
     "next": "16.3.4",
     "react": "19.2.8",
