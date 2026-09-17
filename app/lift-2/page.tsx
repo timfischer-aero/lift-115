@@ -10,26 +10,17 @@ import {
   RadioGroup, 
   RadioGroupItem,
   Popover,
-  Select,
   PopoverTrigger,
   PopoverContent, 
   PopoverHeader,
   PopoverTitle,
   PopoverDescription,
   Input,
-  Drawer,
-  DrawerHeader,
-  DrawerBody,
-  DrawerContent,
-  DrawerTitle,
-  Accordion,
-  AccordionItem,
-  AccordionTrigger,
-  AccordionContent,
+
 } from "@aeroflow/af-components";
 import { patients } from "./mock-patients";
 import { columnPickerGroups } from "./column-picker-config";
-
+import { PatientNotesDrawer } from "./patient-notes-drawer";
 //Types
 import type { Patient } from "./mock-patients";
 import type { UseDataTableProps } from "@aeroflow/af-components";
@@ -238,61 +229,11 @@ export default function LiftTableShell() {
             <PageHeader headerText="Billing Report"></PageHeader>
             <div className="min-h-0 flex-1 overflow-auto">
               {/* Right Side Drawer */}
-               <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
-                 <DrawerContent side="right" aria-describedby={undefined}>
-                   <DrawerHeader actions={<Button variant='outline'>Create New</Button>}>
-                     <DrawerTitle> 
-                      <Select
-                        label="View"
-                        labelPosition='beside'
-                        defaultValue='patNotes'
-                        options={[
-                          {
-                            label: 'Patient Notes',
-                            value: 'patNotes',
-                          },
-                       ]}
-                      >
-                      Patient Notes
-                      </Select>
-                      </DrawerTitle>
-                   </DrawerHeader>
-                   <DrawerBody className="p-4">
-                     <Accordion type="single" variant="panel">
-                       <AccordionItem value="first-section">
-                         <AccordionTrigger>Patient & Demographics</AccordionTrigger>
-                         <AccordionContent>
-                           First section content goes here.
-                         </AccordionContent>
-                       </AccordionItem>
-                       <AccordionItem value="second-section">
-                         <AccordionTrigger>Claim & Order Details</AccordionTrigger>
-                         <AccordionContent>
-                           Second section content goes here.
-                         </AccordionContent>
-                       </AccordionItem>
-                       <AccordionItem value="third-section">
-                         <AccordionTrigger>Diagnoses & Modifiers</AccordionTrigger>
-                         <AccordionContent>
-                           Third section content goes here.
-                         </AccordionContent>
-                       </AccordionItem>
-                       <AccordionItem value="fourth-section">
-                         <AccordionTrigger>Payer & Coverage</AccordionTrigger>
-                         <AccordionContent>
-                           Fourth section content goes here.
-                         </AccordionContent>
-                       </AccordionItem>
-                       <AccordionItem value="fifth-section">
-                         <AccordionTrigger>Provider & Location Info</AccordionTrigger>
-                         <AccordionContent>
-                           Fifth section content goes here.
-                         </AccordionContent>
-                       </AccordionItem>
-                     </Accordion>
-                   </DrawerBody>
-                 </DrawerContent>
-               </Drawer>
+               <PatientNotesDrawer
+                  open={drawerOpen}
+                  onOpenChange={setDrawerOpen}
+                  patient={activePatient}
+                />
 
               {/* Action Top Panel */}
               <div className="flex w-full flex-nowrap items-center justify-between gap-4 overflow-x-auto bg-muted px-4 py-3">
