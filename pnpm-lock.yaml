@@ -17,6 +17,9 @@ importers:
       '@aeroflow/devkit':
         specifier: ^1.4.0
         version: 1.4.0
+      '@tanstack/react-table':
+        specifier: ^8.21.3
+        version: 8.21.3(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       lucide-react:
         specifier: ^1.44.0
         version: 1.44.0(react@19.2.8)

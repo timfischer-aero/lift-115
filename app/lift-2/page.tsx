@@ -18,6 +18,7 @@ import {
   Input,
 } from "@aeroflow/af-components";
 import { patients } from "./mock-patients";
+import { columnPickerGroups } from "./column-picker-config";
 
 //Types
 import type { Patient } from "./mock-patients";
@@ -44,6 +45,19 @@ const displayLink = ({ getValue }: { getValue: () => unknown }) => {
   );
 };
 
+const renderColumnHeader: NonNullable<
+  UseDataTableProps<Patient>["columns"][number]["header"]
+> = ({ column }) => {
+  const label = column.columnDef.meta?.picker?.label ?? column.id;
+
+  return (
+    <div className="flex items-center gap-2">
+      <DataTableDragHandle aria-label={`Move ${label} column`} />
+      <DataTableColumnHeader column={column} title={label} />
+    </div>
+  );
+};
+
 const tableCols: UseDataTableProps<Patient>["columns"] = [
   { id: "selection",
     header: () => <span className="sr-only">&nbsp;</span>,
@@ -59,20 +73,14 @@ const tableCols: UseDataTableProps<Patient>["columns"] = [
     ),
   },
 
-  { accessorKey: "payer", header: ({ column }) => (
-        <div className="flex items-center gap-2">
-            <DataTableDragHandle aria-label="Move Payer column" />
-            <DataTableColumnHeader column={column} title="Payer" />
-        </div>
-    ),
+  { accessorKey: "payer",
+    meta: { picker: { label: "Payer", group: "payer", order: 1 } },
+    header: renderColumnHeader,
   
   },
-  { accessorKey: "patientNumber", header: ({ column }) => (
-      <div className="flex items-center gap-2">
-        <DataTableDragHandle aria-label="Move pt# column" />
-        <DataTableColumnHeader column={column} title="pt#" />
-      </div>
-    ),
+  { accessorKey: "patientNumber",
+    meta: { picker: { label: "pt#", group: "patient", order: 1 } },
+    header: renderColumnHeader,
     cell: ({row}) => (
       <Popover>
         <PopoverTrigger asChild>
@@ -105,84 +113,45 @@ const tableCols: UseDataTableProps<Patient>["columns"] = [
       </Popover>
     )
   },
-  { accessorKey: "hcpc", header: ({ column }) => (
-      <div className="flex items-center gap-2">
-        <DataTableDragHandle aria-label="Move hcpc column" />
-        <DataTableColumnHeader column={column} title="hcpc" />
-      </div>
-    ), cell: displayLink },
-  { accessorKey: "dateOfService", header: ({ column }) => (
-      <div className="flex items-center gap-2">
-        <DataTableDragHandle aria-label="Move dos column" />
-        <DataTableColumnHeader column={column} title="dos" />
-      </div>
-    ) },
-  { accessorKey: "endServiceDate", header: ({ column }) => (
-      <div className="flex items-center gap-2">
-        <DataTableDragHandle aria-label="Move end_service_date column" />
-        <DataTableColumnHeader column={column} title="end_service_date" />
-      </div>
-    ) },
-  { accessorKey: "sentDate", header: ({ column }) => (
-      <div className="flex items-center gap-2">
-        <DataTableDragHandle aria-label="Move sentdt column" />
-        <DataTableColumnHeader column={column} title="sentdt" />
-      </div>
-    ), cell: displayValue },
-  { accessorKey: "xmit", header: ({ column }) => (
-      <div className="flex items-center gap-2">
-        <DataTableDragHandle aria-label="Move xmit column" />
-        <DataTableColumnHeader column={column} title="xmit" />
-      </div>
-    ), cell: displayValue },
-  { accessorKey: "denialDate", header: ({ column }) => (
-      <div className="flex items-center gap-2">
-        <DataTableDragHandle aria-label="Move denydt column" />
-        <DataTableColumnHeader column={column} title="denydt" />
-      </div>
-    ), cell: displayValue },
-  { accessorKey: "denialCode", header: ({ column }) => (
-      <div className="flex items-center gap-2">
-        <DataTableDragHandle aria-label="Move denycd column" />
-        <DataTableColumnHeader column={column} title="denycd" />
-      </div>
-    ), cell: displayLink },
-  { accessorKey: "denialCode2", header: ({ column }) => (
-      <div className="flex items-center gap-2">
-        <DataTableDragHandle aria-label="Move denycd2 column" />
-        <DataTableColumnHeader column={column} title="denycd2" />
-      </div>
-    ), cell: displayLink },
-  { accessorKey: "denialCode3", header: ({ column }) => (
-      <div className="flex items-center gap-2">
-        <DataTableDragHandle aria-label="Move denycd3 column" />
-        <DataTableColumnHeader column={column} title="denycd3" />
-      </div>
-    ), cell: displayLink },
-  { accessorKey: "rm1", header: ({ column }) => (
-      <div className="flex items-center gap-2">
-        <DataTableDragHandle aria-label="Move rm1 column" />
-        <DataTableColumnHeader column={column} title="rm1" />
-      </div>
-    ), cell: displayLink },
-  { accessorKey: "cmn", header: ({ column }) => (
-      <div className="flex items-center gap-2">
-        <DataTableDragHandle aria-label="Move cmn column" />
-        <DataTableColumnHeader column={column} title="cmn" />
-      </div>
-    ), cell: displayValue },
-  { accessorKey: "remit", header: ({ column }) => (
-      <div className="flex items-center gap-2">
-        <DataTableDragHandle aria-label="Move remit column" />
-        <DataTableColumnHeader column={column} title="remit" />
-      </div>
-    ), cell: displayValue },
-  { accessorKey: "serviceStatus", header: ({ column }) => (
-      <div className="flex items-center gap-2">
-        <DataTableDragHandle aria-label="Move S/U column" />
-        <DataTableColumnHeader column={column} title="S/U" />
-      </div>
-    ), cell: displayValue },
+  { accessorKey: "hcpc",
+    meta: { picker: { label: "hcpc", group: "claim", order: 3 } },
+    header: renderColumnHeader, cell: displayLink },
+  { accessorKey: "dateOfService",
+    meta: { picker: { label: "dos", group: "claim", order: 1 } },
+    header: renderColumnHeader },
+  { accessorKey: "endServiceDate",
+    meta: { picker: { label: "end_service_date", group: "claim", order: 2 } },
+    header: renderColumnHeader },
+  { accessorKey: "sentDate",
+    meta: { picker: { label: "sentdt", group: "billing", order: 1 } },
+    header: renderColumnHeader, cell: displayValue },
+  { accessorKey: "xmit",
+    meta: { picker: { label: "xmit", group: "billing", order: 2 } },
+    header: renderColumnHeader, cell: displayValue },
+  { accessorKey: "denialDate",
+    meta: { picker: { label: "denydt", group: "billing", order: 3 } },
+    header: renderColumnHeader, cell: displayValue },
+  { accessorKey: "denialCode",
+    meta: { picker: { label: "denycd", group: "billing", order: 4 } },
+    header: renderColumnHeader, cell: displayLink },
+  { accessorKey: "denialCode2",
+    meta: { picker: { label: "denycd2", group: "billing", order: 5 } },
+    header: renderColumnHeader, cell: displayLink },
+  { accessorKey: "denialCode3",
+    meta: { picker: { label: "denycd3", group: "billing", order: 6 } },
+    header: renderColumnHeader, cell: displayLink },
+  { accessorKey: "rm1",
+    meta: { picker: { label: "rm1", group: "billing", order: 7 } },
+    header: renderColumnHeader, cell: displayLink },
+  { accessorKey: "cmn",
+    meta: { picker: { label: "cmn", group: "billing", order: 8 } },
+    header: renderColumnHeader, cell: displayValue },
+  { accessorKey: "remit",
+    meta: { picker: { label: "remit", group: "billing", order: 9 } },
+    header: renderColumnHeader, cell: displayValue },
+  { accessorKey: "serviceStatus",
+    meta: { picker: { label: "S/U", group: "billing", order: 10 } },
+    header: renderColumnHeader, cell: displayValue },
 ];
 
 
@@ -193,7 +162,7 @@ export default function LiftTableShell() {
       Object.keys(rowSelection).find((id) => rowSelection[id]) ?? "";
 
     //Visibility selection variables
-    const [columnVisibility, setColumnVisibility] = useState({});
+    const [columnVisibility, setColumnVisibility] = useState<Record<string, boolean>>({});
 
     const table = useDataTable<Patient>({
         data: patients,
@@ -206,6 +175,22 @@ export default function LiftTableShell() {
         columnVisibility,
         onColumnVisibilityChange: setColumnVisibility,
     });
+
+    const pickerGroups = columnPickerGroups.map((group) => ({
+      ...group,
+      columns: table
+        .getAllLeafColumns()
+        .filter(
+          (column) =>
+            column.getCanHide() &&
+            column.columnDef.meta?.picker?.group === group.id
+        )
+        .sort(
+          (a, b) =>
+            (a.columnDef.meta?.picker?.order ?? 0) -
+            (b.columnDef.meta?.picker?.order ?? 0)
+        ),
+    }));
 
     return (
         <div className="flex h-dvh w-full min-w-0 flex-col overflow-hidden [&>header]:shrink-0">
@@ -270,9 +255,46 @@ export default function LiftTableShell() {
             <div className="flex shrink-0 items-center justify-between gap-4 border-t border-gray-200 bg-gray-100 px-4 py-3">
               <div className="text-left">{patients.length} Results</div>
               <div className="ml-auto shrink-0">
-                <Button variant='outline'>
-                Show/Hide Columns
-                </Button>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button variant="outline">Show/Hide Columns</Button>
+                  </PopoverTrigger>
+
+                  <PopoverContent
+                    align="end"
+                    side="top"
+                    aria-label="Choose visible columns"
+                    className="w-fit max-w-[calc(100vw-2rem)] max-h-[70dvh] overflow-auto"
+                  >
+                    <div className="grid grid-cols-1 gap-3 md:grid-cols-4">
+                      {pickerGroups.map((group) => (
+                        <fieldset key={group.id} className="min-w-0">
+                          <legend className="mb-3 max-w-full break-words text-sm font-semibold uppercase">
+                            {group.label}
+                          </legend>
+
+                          <div className="space-y-1">
+                            {group.columns.map((column) => (
+                              <label
+                                key={column.id}
+                                className="flex cursor-pointer items-center gap-2 text-sm"
+                              >
+                                <input
+                                  type="checkbox"
+                                  checked={column.getIsVisible()}
+                                  onChange={(event) =>
+                                    column.toggleVisibility(event.target.checked)
+                                  }
+                                />
+                                <span>{column.columnDef.meta?.picker?.label}</span>
+                              </label>
+                            ))}
+                          </div>
+                        </fieldset>
+                      ))}
+                    </div>
+                  </PopoverContent>
+                </Popover>
               </div>
             </div>
         </div>
