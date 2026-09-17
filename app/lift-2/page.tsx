@@ -1,5 +1,5 @@
 "use client";
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { PageHeader } from "@/components/page-header";
 import { 
   useDataTable, 
@@ -10,12 +10,22 @@ import {
   RadioGroup, 
   RadioGroupItem,
   Popover,
+  Select,
   PopoverTrigger,
   PopoverContent, 
   PopoverHeader,
   PopoverTitle,
   PopoverDescription,
   Input,
+  Drawer,
+  DrawerHeader,
+  DrawerBody,
+  DrawerContent,
+  DrawerTitle,
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
 } from "@aeroflow/af-components";
 import { patients } from "./mock-patients";
 import { columnPickerGroups } from "./column-picker-config";
@@ -30,20 +40,31 @@ const displayValue = ({ getValue }: { getValue: () => unknown }) => {
   return value == null ? "—" : String(value);
 };
 
-const displayLink = ({ getValue }: { getValue: () => unknown }) => {
-  const value = getValue();
-  if (value == null) return "—";
+function displayLink(onClick: (patient: Patient) => void) {
+  return ({
+    getValue,
+    row,
+  }: {
+    getValue: () => unknown;
+    row: { original: Patient };
+  }) => {
+    const value = getValue();
+    if (value == null) return "—";
 
-  return (
-    <button
-      type="button"
-      className="cursor-pointer text-blue-700 underline hover:text-blue-900"
-      onClick={(event) => event.stopPropagation()}
-    >
-      {String(value)}
-    </button>
-  );
-};
+    return (
+      <button
+        type="button"
+        className="cursor-pointer text-blue-700 underline hover:text-blue-900"
+        onClick={(event) => {
+          event.stopPropagation();
+          onClick(row.original);
+        }}
+      >
+        {String(value)}
+      </button>
+    );
+  };
+}
 
 const renderColumnHeader: NonNullable<
   UseDataTableProps<Patient>["columns"][number]["header"]
@@ -58,7 +79,10 @@ const renderColumnHeader: NonNullable<
   );
 };
 
-const tableCols: UseDataTableProps<Patient>["columns"] = [
+function createColumns(
+  openPatientNotes: (patient: Patient) => void
+): UseDataTableProps<Patient>["columns"] {
+  return [
   { id: "selection",
     header: () => <span className="sr-only">&nbsp;</span>,
     size:48,
@@ -115,7 +139,9 @@ const tableCols: UseDataTableProps<Patient>["columns"] = [
   },
   { accessorKey: "hcpc",
     meta: { picker: { label: "hcpc", group: "claim", order: 3 } },
-    header: renderColumnHeader, cell: displayLink },
+    header: renderColumnHeader,
+    cell: displayLink(openPatientNotes),
+  },
   { accessorKey: "dateOfService",
     meta: { picker: { label: "dos", group: "claim", order: 1 } },
     header: renderColumnHeader },
@@ -133,19 +159,19 @@ const tableCols: UseDataTableProps<Patient>["columns"] = [
     header: renderColumnHeader, cell: displayValue },
   { accessorKey: "denialCode",
     meta: { picker: { label: "denycd", group: "billing", order: 4 } },
-    header: renderColumnHeader, cell: displayLink },
+    header: renderColumnHeader },
   { accessorKey: "denialCode2",
     meta: { picker: { label: "denycd2", group: "billing", order: 5 } },
-    header: renderColumnHeader, cell: displayLink },
+    header: renderColumnHeader },
   { accessorKey: "denialCode3",
     meta: { picker: { label: "denycd3", group: "billing", order: 6 } },
-    header: renderColumnHeader, cell: displayLink },
+    header: renderColumnHeader},
   { accessorKey: "rm1",
     meta: { picker: { label: "rm1", group: "billing", order: 7 } },
-    header: renderColumnHeader, cell: displayLink },
+    header: renderColumnHeader },
   { accessorKey: "cmn",
     meta: { picker: { label: "cmn", group: "billing", order: 8 } },
-    header: renderColumnHeader, cell: displayValue },
+    header: renderColumnHeader },
   { accessorKey: "remit",
     meta: { picker: { label: "remit", group: "billing", order: 9 } },
     header: renderColumnHeader, cell: displayValue },
@@ -153,7 +179,7 @@ const tableCols: UseDataTableProps<Patient>["columns"] = [
     meta: { picker: { label: "S/U", group: "billing", order: 10 } },
     header: renderColumnHeader, cell: displayValue },
 ];
-
+}
 
 export default function LiftTableShell() {
     //Row Selection variables  
@@ -161,8 +187,23 @@ export default function LiftTableShell() {
     const selectedRowId =
       Object.keys(rowSelection).find((id) => rowSelection[id]) ?? "";
 
-    //Visibility selection variables
+    //Column Visibility selection variables
     const [columnVisibility, setColumnVisibility] = useState<Record<string, boolean>>({});
+
+    //Drawer Visibility
+    const [drawerOpen, setDrawerOpen] = useState(false);
+
+    //Active Patient
+    const [activePatient, setActivePatient] = useState<Patient | null>(null);
+
+    const tableCols = useMemo(
+      () =>
+        createColumns((patient) => {
+          setActivePatient(patient);
+          setDrawerOpen(true);
+        }),
+      []
+    );
 
     const table = useDataTable<Patient>({
         data: patients,
@@ -196,6 +237,63 @@ export default function LiftTableShell() {
         <div className="flex h-dvh w-full min-w-0 flex-col overflow-hidden [&>header]:shrink-0">
             <PageHeader headerText="Billing Report"></PageHeader>
             <div className="min-h-0 flex-1 overflow-auto">
+              {/* Right Side Drawer */}
+               <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
+                 <DrawerContent side="right" aria-describedby={undefined}>
+                   <DrawerHeader actions={<Button variant='outline'>Create New</Button>}>
+                     <DrawerTitle> 
+                      <Select
+                        label="View"
+                        labelPosition='beside'
+                        defaultValue='patNotes'
+                        options={[
+                          {
+                            label: 'Patient Notes',
+                            value: 'patNotes',
+                          },
+                       ]}
+                      >
+                      Patient Notes
+                      </Select>
+                      </DrawerTitle>
+                   </DrawerHeader>
+                   <DrawerBody className="p-4">
+                     <Accordion type="single" variant="panel">
+                       <AccordionItem value="first-section">
+                         <AccordionTrigger>Patient & Demographics</AccordionTrigger>
+                         <AccordionContent>
+                           First section content goes here.
+                         </AccordionContent>
+                       </AccordionItem>
+                       <AccordionItem value="second-section">
+                         <AccordionTrigger>Claim & Order Details</AccordionTrigger>
+                         <AccordionContent>
+                           Second section content goes here.
+                         </AccordionContent>
+                       </AccordionItem>
+                       <AccordionItem value="third-section">
+                         <AccordionTrigger>Diagnoses & Modifiers</AccordionTrigger>
+                         <AccordionContent>
+                           Third section content goes here.
+                         </AccordionContent>
+                       </AccordionItem>
+                       <AccordionItem value="fourth-section">
+                         <AccordionTrigger>Payer & Coverage</AccordionTrigger>
+                         <AccordionContent>
+                           Fourth section content goes here.
+                         </AccordionContent>
+                       </AccordionItem>
+                       <AccordionItem value="fifth-section">
+                         <AccordionTrigger>Provider & Location Info</AccordionTrigger>
+                         <AccordionContent>
+                           Fifth section content goes here.
+                         </AccordionContent>
+                       </AccordionItem>
+                     </Accordion>
+                   </DrawerBody>
+                 </DrawerContent>
+               </Drawer>
+
               {/* Action Top Panel */}
               <div className="flex w-full flex-nowrap items-center justify-between gap-4 overflow-x-auto bg-muted px-4 py-3">
                 <div className="flex shrink-0 flex-nowrap items-center justify-start gap-4">
