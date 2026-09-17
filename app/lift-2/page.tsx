@@ -105,6 +105,11 @@ function createColumns(
   { accessorKey: "patientNumber",
     meta: { picker: { label: "pt#", group: "patient", order: 1 } },
     header: renderColumnHeader,
+    cell: displayLink(openPatientNotes),
+  },
+  { accessorKey: "hcpc",
+    meta: { picker: { label: "hcpc", group: "claim", order: 3 } },
+    header: renderColumnHeader,
     cell: ({row}) => (
       <Popover>
         <PopoverTrigger asChild>
@@ -116,7 +121,7 @@ function createColumns(
               //TODO
             }}
           > 
-            { row.original.patientNumber }
+            { row.original.hcpc }
           </button>
         </PopoverTrigger>
         <PopoverContent
@@ -126,7 +131,7 @@ function createColumns(
           >
             <PopoverHeader>
               <PopoverTitle id={`patient-title-${row.id}`}>
-                Patient info for { row.original.patientNumber }
+                HCPC info for { row.original.hcpc }
               </PopoverTitle>
               <PopoverDescription id={`patient-description-${row.id}`}>
                 This popup could give information on a specific patient, or could instead toggle a drawer on the right to edit patient details
@@ -136,11 +141,6 @@ function createColumns(
           </PopoverContent>
       </Popover>
     )
-  },
-  { accessorKey: "hcpc",
-    meta: { picker: { label: "hcpc", group: "claim", order: 3 } },
-    header: renderColumnHeader,
-    cell: displayLink(openPatientNotes),
   },
   { accessorKey: "dateOfService",
     meta: { picker: { label: "dos", group: "claim", order: 1 } },
