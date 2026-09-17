@@ -134,7 +134,7 @@ function createColumns(
                 HCPC info for { row.original.hcpc }
               </PopoverTitle>
               <PopoverDescription id={`patient-description-${row.id}`}>
-                This popup could give information on a specific patient, or could instead toggle a drawer on the right to edit patient details
+                This popup could give information on a specific code. Others can toggle a drawer on the right to edit patient details
               </PopoverDescription>
             </PopoverHeader>
             
