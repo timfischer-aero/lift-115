@@ -20,7 +20,7 @@ export default function Home() {
           <div className="w-full">
             <Select
               label="Report Type"
-              labelPosition="above"
+              labelPosition="default"
               placeholder="Select Tier"
               options={[
                 {
@@ -51,7 +51,7 @@ export default function Home() {
             <div className="min-w-0">
               <Select
                 label="Patient Name"
-                labelPosition="above"
+                labelPosition="default"
                 labelClassName="py-0"
                 wrapperClassName="space-y-2"
                 placeholder="Select Patient"
@@ -83,7 +83,7 @@ export default function Home() {
           <div className="w-full">
             <Select
               label="Payer Rep"
-              labelPosition="above"
+              labelPosition="default"
               placeholder="Select Payer Rep"
               options={[
                 {
@@ -106,7 +106,7 @@ export default function Home() {
           <div className="w-full mt-4">
             <Select
               label="Payer"
-              labelPosition="above"
+              labelPosition="default"
               placeholder="Select Payer"
               options={[
                 {

@@ -34,7 +34,7 @@ export function PatientNotesDrawer({
           <DrawerTitle>
             <Select
               label="View"
-              labelPosition="beside"
+              labelPosition="side"
               defaultValue="patNotes"
               options={[
                 {

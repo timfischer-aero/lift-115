@@ -258,7 +258,7 @@ export default function LiftTableShell() {
                     <Input
                       defaultValue=""
                       label="Patient Number"
-                      labelPosition="beside"
+                      labelPosition="inline"
                       placeholder="Number"
                       size="default"
                       type="text"
@@ -268,7 +268,7 @@ export default function LiftTableShell() {
                     <Input
                       defaultValue=""
                       label="Patient Name"
-                      labelPosition="beside"
+                      labelPosition="inline"
                       placeholder="Name"
                       size="default"
                       type="text"
