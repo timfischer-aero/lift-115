@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@aeroflow/af-components':
-        specifier: ^1.4.0
-        version: 1.4.0(@types/react-dom@19.2.7(@types/react@19.2.18))(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+        specifier: file:../../Documents/GitHub/.local-packages/aeroflow-af-components-1.4.0.tgz
+        version: file:../../Documents/GitHub/.local-packages/aeroflow-af-components-1.4.0.tgz(@types/react-dom@19.2.7(@types/react@19.2.18))(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       '@aeroflow/design-tokens':
         specifier: ^1.2.1
         version: 1.2.1(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
@@ -66,8 +66,9 @@ importers:
 
 packages:
 
-  '@aeroflow/af-components@1.4.0':
-    resolution: {integrity: sha512-tqM7RTgHco4AesZBxD2aPwrA38Sk3E0xSIOWUBAFZRdaZ06zba60Yc8qN7BtFNwcjVoq1SSwhY4MvmJd1jFfnQ==}
+  '@aeroflow/af-components@file:../../Documents/GitHub/.local-packages/aeroflow-af-components-1.4.0.tgz':
+    resolution: {integrity: sha512-llXZqyuxMUVyzmrEAlkJIWt5cehU2thImAPesPpGu48tqyEVtzswdZuuL+oDbxYTIerdXMpLIX/4W1auvLp7Bw==, tarball: file:../../Documents/GitHub/.local-packages/aeroflow-af-components-1.4.0.tgz}
+    version: 1.4.0
     engines: {node: '>=24.0.0'}
     peerDependencies:
       react: '>=19.0.0'
@@ -2603,7 +2604,7 @@ packages:
 
 snapshots:
 
-  '@aeroflow/af-components@1.4.0(@types/react-dom@19.2.7(@types/react@19.2.18))(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
+  '@aeroflow/af-components@file:../../Documents/GitHub/.local-packages/aeroflow-af-components-1.4.0.tgz(@types/react-dom@19.2.7(@types/react@19.2.18))(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
     dependencies:
       '@aeroflow/design-tokens': 1.2.1(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       '@dnd-kit/core': 6.3.1(react-dom@19.2.8(react@19.2.8))(react@19.2.8)

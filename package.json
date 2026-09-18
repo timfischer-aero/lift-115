@@ -10,7 +10,7 @@
     "codeartifact:login": "aws codeartifact login --tool npm --domain aeroflow --domain-owner 996147455950 --repository aeroflow --region us-east-1 --profile CodeArtifactRead-996147455950"
   },
   "dependencies": {
-    "@aeroflow/af-components": "^1.4.0",
+    "@aeroflow/af-components": "file:../../Documents/GitHub/.local-packages/aeroflow-af-components-1.4.0.tgz",
     "@aeroflow/design-tokens": "^1.2.1",
     "@aeroflow/devkit": "^1.4.0",
     "@tanstack/react-table": "^8.21.3",

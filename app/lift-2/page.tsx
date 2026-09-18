@@ -187,6 +187,20 @@ export default function LiftTableShell() {
     //Active Patient
     const [activePatient, setActivePatient] = useState<Patient | null>(null);
 
+    //Colum order - needed to control seleciton as always the first option
+    const [columnOrder, setColumnOrder] = useState<string[]>([]);
+
+    const handleColumnOrderChange: NonNullable<
+      UseDataTableProps<Patient>["onColumnOrderChange"]
+    > = (updater) => {
+      setColumnOrder((current) => {
+        const next =
+          typeof updater === "function" ? updater(current) : updater;
+
+        return ["selection", ...next.filter((id) => id !== "selection")]; //Removes selection from list and always has it listed as first item in newly built array
+      });
+    };
+
     const tableCols = useMemo(
       () =>
         createColumns((patient) => {
@@ -206,6 +220,8 @@ export default function LiftTableShell() {
         rowSelection,
         columnVisibility,
         onColumnVisibilityChange: setColumnVisibility,
+        columnOrder,
+        onColumnOrderChange: handleColumnOrderChange,
     });
 
     const pickerGroups = columnPickerGroups.map((group) => ({
