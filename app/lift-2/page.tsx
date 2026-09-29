@@ -87,17 +87,17 @@ function createColumns(
       />
     ),
   },
-
-  { accessorKey: "payer",
-    meta: { picker: { label: "Payer", group: "payer", order: 1 } },
-    header: renderColumnHeader,
-  
-  },
   { accessorKey: "patientNumber",
     meta: { picker: { label: "pt#", group: "patient", order: 1 } },
     header: renderColumnHeader,
     cell: displayLink(openPatientNotes),
   },
+  { accessorKey: "payer",
+    meta: { picker: { label: "Payer", group: "payer", order: 1 } },
+    header: renderColumnHeader,
+  
+  },
+  
   { accessorKey: "hcpc",
     meta: { picker: { label: "hcpc", group: "claim", order: 3 } },
     header: renderColumnHeader,
@@ -190,6 +190,9 @@ export default function LiftTableShell() {
     //Colum order - needed to control seleciton as always the first option
     const [columnOrder, setColumnOrder] = useState<string[]>([]);
 
+    //State for pagination
+    const [pagination, setPagination] = useState({pageIndex:0, pageSize: 14});
+
     const handleColumnOrderChange: NonNullable<
       UseDataTableProps<Patient>["onColumnOrderChange"]
     > = (updater) => {
@@ -222,6 +225,9 @@ export default function LiftTableShell() {
         onColumnVisibilityChange: setColumnVisibility,
         columnOrder,
         onColumnOrderChange: handleColumnOrderChange,
+        pagination,
+        onPaginationChange: setPagination,
+        paginate: true,
     });
 
     const pickerGroups = columnPickerGroups.map((group) => ({
@@ -307,9 +313,30 @@ export default function LiftTableShell() {
             </div>
              
              {/* Footer */}
-            <div className="flex shrink-0 items-center justify-between gap-4 border-t border-gray-200 bg-gray-100 px-4 py-3">
-              <div className="text-left">{patients.length} Results</div>
-              <div className="ml-auto shrink-0">
+            <div className="grid grid-cols-[1fr_auto_1fr] shrink-0 items-center gap-4 border-t border-gray-200 bg-gray-100 px-4 py-3">
+              <div className="justify-self-start">{patients.length} Results</div>
+              <div className="flex items-center gap-3">
+                <Button
+                    variant="outline"
+                    onClick={() => table.previousPage()}
+                    disabled={!table.getCanPreviousPage()}
+                >
+                    Previous
+                </Button>
+
+                <span>
+                    Page {pagination.pageIndex + 1} of {Math.max(1, table.getPageCount())}
+                </span>
+
+                <Button
+                    variant="outline"
+                    onClick={() => table.nextPage()}
+                    disabled={!table.getCanNextPage()}
+                >
+                    Next
+                </Button>
+            </div>
+              <div className="justify-self-end">
                 <Popover>
                   <PopoverTrigger asChild>
                     <Button variant="outline">Show/Hide Columns</Button>
