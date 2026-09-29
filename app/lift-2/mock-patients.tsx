@@ -1,4 +1,9 @@
-export type Patient = {
+import {
+  patientColumnDefinitions,
+  type PatientColumnKey,
+} from "./column-picker-config";
+
+type OriginalPatient = {
   id: string;
   payer: string;
   patientNumber: string;
@@ -17,7 +22,7 @@ export type Patient = {
   serviceStatus: string | null;
 };
 
-export const patients: Patient[] = [
+const originalPatients: OriginalPatient[] = [
   {
     id: "sample-row-1",
     payer: "MOLINA SC MEDICAID",
@@ -559,3 +564,32 @@ export const patients: Patient[] = [
     serviceStatus: "U",
   },
 ];
+
+export type Patient = OriginalPatient &
+  Record<PatientColumnKey, string | number | null>;
+
+// Populate every configured field; unavailable mock values display as an em dash.
+const emptyFields = Object.fromEntries(
+  patientColumnDefinitions.map(({ key }) => [key, null]),
+) as Record<PatientColumnKey, null>;
+
+export const patients: Patient[] = originalPatients.map((patient, index) => ({
+  ...emptyFields,
+  ...patient,
+  nm: `Test Patient ${index + 1}`,
+  dob: `1/${(index % 28) + 1}/1980`,
+  pt_st: ["SC", "NC", "GA"][index % 3],
+  ZIP: String(29000 + index),
+  County: `Test County ${(index % 3) + 1}`,
+  desc: `Test supply ${patient.hcpc}`,
+  qty: (index % 5) + 1,
+  type: "Test claim",
+  payer_type: "Test coverage",
+  pay1: patient.payer,
+  doc: `Test Provider ${(index % 4) + 1}`,
+  lc_name: `Test Location ${(index % 3) + 1}`,
+  lc_state: ["SC", "NC", "GA"][index % 3],
+  ar_age: index * 5,
+  ar_age_bucket: index * 5 <= 30 ? "0–30" : index * 5 <= 60 ? "31–60" : "61+",
+  count: index + 1,
+}));
