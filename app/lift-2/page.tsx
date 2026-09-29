@@ -127,6 +127,7 @@ function createColumns(
       id: "selection",
       header: () => <span className="sr-only">&nbsp;</span>,
       size: 48,
+      enableResizing: false,
       enableSorting: false,
       enableHiding: false,
       cell: ({ row }) => (
@@ -211,6 +212,8 @@ export default function LiftTableShell() {
     onColumnVisibilityChange: setColumnVisibility,
     columnOrder,
     onColumnOrderChange: handleColumnOrderChange,
+    enableColumnResizing: true,
+    columnResizeMode: "onChange",
     pagination,
     onPaginationChange: setPagination,
     paginate: true,
